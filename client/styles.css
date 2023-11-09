@@ -1,82 +1,92 @@
-/* General styles */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #E15554;
+    color: #FFFFFF;
 }
 
 .container {
-    width: 80%;
+    width: 90%;
     margin: auto;
     padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #E15554;
+    border-radius: 8px;
+}
+h1{
+    color: #FFC20E;
+    text-shadow: 1px 1px 1px #000;
+}
+h3{color: #FFC20E;
+    text-shadow: 1px 1px 1px #000;
 }
 
 h2 {
-    color: #333;
+    color: #FFC20E;
+    text-shadow: 1px 1px 1px #000;
+}
+h4{
+    color: #FFC20E;
+    text-shadow: 1px 1px 1px #000;
+
+}
+p{color: #FFC20E;
+    text-shadow: 1px 1px 1px #000;
 }
 
-/* Search Section */
 .search-section {
     padding: 20px 0;
 }
 
-.search-input {
+.search-input, #sortCriteria, #listName {
     width: 70%;
     padding: 10px;
     margin-right: 10px;
-    border: 1px solid #ddd;
+    border: 2px solid #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.7);
     border-radius: 4px;
+    color: #333;
+    padding-top: 10px;
 }
 
-/* Results Section */
 .results-section {
     margin-bottom: 30px;
 }
 
-/* Lists Section */
 .lists-section {
     margin-bottom: 30px;
 }
 
-#listName {
-    width: 70%;
-    padding: 10px;
-    margin-right: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-/* Sort Section */
 .sort-section {
     padding: 20px 0;
 }
 
-#sortCriteria {
-    padding: 10px;
-    margin-right: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-/* Buttons */
 button {
     padding: 10px 15px;
-    background-color: #5cb85c;
-    color: white;
+    background-color: #1c86e3;
+    color: #333;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    font-weight: bold;
 }
+
+
 
 button:hover {
-    background-color: #4cae4c;
+    background-color: #FFC20E;
+    transform: translateY(-2px);
 }
 
-/* Utilities */
 .hidden {
     display: none;
+}
+
+li {
+    margin-bottom: 10px;
+    list-style: none;
+    padding: 10px;
+    background-color: linear-gradient(to right, #E15554, #4D9DE0);
+    border-radius: 4px;
+    border: 1px solid #000;
+    margin-right: 200px;
 }

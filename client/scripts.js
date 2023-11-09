@@ -54,7 +54,19 @@ document.addEventListener('DOMContentLoaded', function() {
     
     
 
-   
+    function searchSuperheroes(query, filterBy = 'name', sortCriteria = 'name') {
+        fetch(`/api/superheroes/search?q=${encodeURIComponent(query)}&filterBy=${encodeURIComponent(filterBy)}&sort=${sortCriteria}`)
+            .then(response => response.json())
+            .then(data => {
+                // Retrieve the value of 'n' from the input or default to the length of the data
+                const n = document.getElementById('numberOfResults').value || data.length;
+                sortedHeroes.push(data)
+                displayResults(data, parseInt(n, 10)); // Parse the input to be an integer
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
     
     function displayResults(results, n) {
         const resultsDiv = document.getElementById('results');

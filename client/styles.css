@@ -70,19 +70,8 @@ button {
     font-weight: bold;
 }
 
-.clear-container, #clear {
-    padding: 10px 15px;
-    background-color: #5dea81;
-    color: #333;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-}
 
-.clear-container, #clear:hover {
-    background-color: #e26666;
-    transform: translateY(-2px);
-}
+
 
 button:hover {
     background-color: #FFC20E;

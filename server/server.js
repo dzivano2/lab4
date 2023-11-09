@@ -158,14 +158,6 @@ app.get('/api/superheroes/search', (req, res) => {
     }
 });
 
-app.post('/api/lists', (req, res) => {
-    const { listName } = req.body;
-    if (lists[listName]) {
-      return res.status(400).send('List name already exists.');
-    }
-    lists[listName] = [];
-    res.status(201).send('List created successfully.');
-  });
 
 
   app.put('/api/lists/:name', (req, res) => {

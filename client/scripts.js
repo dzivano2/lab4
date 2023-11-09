@@ -68,13 +68,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
     
-    function displayResults(results, n) {
+    function displayResults(results) {
         const resultsDiv = document.getElementById('results');
         resultsDiv.innerHTML = '';
         const ul = document.createElement('ul');
     
         // Display the results up to n items
-        results.slice(0, n).forEach(superhero => {
+        results.forEach(superhero => {
             const li = document.createElement('li');
             // Setup the innerHTML with superhero details
             li.innerHTML = generateSuperheroHTML(superhero);

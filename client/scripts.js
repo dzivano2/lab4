@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     getDetailButton.addEventListener('click', function() {
         const id = superheroID.value;
         const field = detailField.value;
-        let url = `/api/superheroes/detail?field=${encodeURIComponent(field)}`;
+        let url = `/api/superheroes/detail?field=${encodeURIComponent(field)}`;//use encodeURI for input sanitization, this encodes the uri and helps prevent injection attacks
         //Create proper url
         if(id.trim()!==''){
             url+=`&id=${encodeURIComponent(id.trim())}`;

@@ -2,9 +2,23 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcrypt');
+const passport = require('passport');
+const session = require('express-session');
+const LocalStrategy = require('passport-local').Strategy;
 
-// Initialize the app
 const app = express();
+
+// Session configuration
+app.use(session({
+  secret: 'theKey', 
+  resave: false,
+  saveUninitialized: false
+}));
+
+// Passport initialization
+app.use(passport.initialize());
+app.use(passport.session());
 let lists={};
 
 // Middleware to handle json data
@@ -14,6 +28,59 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client')));
 
 let favoriteLists = []; // This will hold our favorite lists
+//password endpoints
+passport.use(new LocalStrategy(
+  { usernameField: 'email' }, // Assuming the login form has 'email' as the name of the field
+  async (email, password, done) => {
+    try {
+      const user = await User.findByEmail(email); // Replace this with your method to find a user by email
+      if (!user) {
+        return done(null, false, { message: 'No user with that email' });
+      }
+
+      // Check password
+      const match = await bcrypt.compare(password, user.password);
+      if (match) {
+        return done(null, user);
+      } else {
+        return done(null, false, { message: 'Password incorrect' });
+      }
+    } catch (e) {
+      return done(e);
+    }
+  }
+));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id); // Assuming your user object has an id
+});
+
+passport.deserializeUser((id, done) => {
+  // Replace this with your method to find a user by ID
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
+
+app.post('/register', async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    // Create a new user and save it to the database
+    // Example: User.create({ email: req.body.email, password: hashedPassword });
+    res.redirect('/login');
+  } catch {
+    res.redirect('/register');
+  }
+});
+
+app.post('/login', passport.authenticate('local', {
+  successRedirect: '/dashboard', // Redirect to another route on success
+  failureRedirect: '/login',     // Redirect back to the login page on failure
+  failureFlash: true             // Optional: use flash messages for errors
+}));
+
+
+
 
 app.get('/api/superheroes/info', (req, res) => {
     const infoPath = path.join(__dirname, 'superhero_info.json');

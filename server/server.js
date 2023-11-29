@@ -6,7 +6,24 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
+const mongoose = require('mongoose');
+const rawPassword = "MyBoy/2002"; // your original password
+const encodedPassword = encodeURIComponent(rawPassword);
 
+// then use this encodedPassword in your connection string
+const mongoURI = `mongodb+srv://devenzivanovic:${encodedPassword}@cluster0.ecxmiby.mongodb.net/?retryWrites=true&w=majority`;
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
+
+const userSchema = new mongoose.Schema({
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    nickname: String, // and other relevant fields
+  });
+  
+const User = mongoose.model('User', userSchema);
+  
 const app = express();
 
 // Session configuration
@@ -29,57 +46,6 @@ app.use(express.static(path.join(__dirname, '../client')));
 
 let favoriteLists = []; // This will hold our favorite lists
 //password endpoints
-passport.use(new LocalStrategy(
-  { usernameField: 'email' }, // Assuming the login form has 'email' as the name of the field
-  async (email, password, done) => {
-    try {
-      const user = await User.findByEmail(email); // Replace this with your method to find a user by email
-      if (!user) {
-        return done(null, false, { message: 'No user with that email' });
-      }
-
-      // Check password
-      const match = await bcrypt.compare(password, user.password);
-      if (match) {
-        return done(null, user);
-      } else {
-        return done(null, false, { message: 'Password incorrect' });
-      }
-    } catch (e) {
-      return done(e);
-    }
-  }
-));
-
-passport.serializeUser((user, done) => {
-  done(null, user.id); // Assuming your user object has an id
-});
-
-passport.deserializeUser((id, done) => {
-  // Replace this with your method to find a user by ID
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
-});
-
-app.post('/register', async (req, res) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    // Create a new user and save it to the database
-    // Example: User.create({ email: req.body.email, password: hashedPassword });
-    res.redirect('/login');
-  } catch {
-    res.redirect('/register');
-  }
-});
-
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/dashboard', // Redirect to another route on success
-  failureRedirect: '/login',     // Redirect back to the login page on failure
-  failureFlash: true             // Optional: use flash messages for errors
-}));
-
-
 
 
 app.get('/api/superheroes/info', (req, res) => {
